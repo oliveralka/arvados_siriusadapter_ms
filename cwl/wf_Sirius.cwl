@@ -53,9 +53,9 @@ inputs:
     default: 1
 
 outputs:
-  out_dir:
-    type: Directory
-    outputSource: out_dir/
+  zip_all:
+    type: File
+    outputSource: zip_sirius/zip_all
 
 steps:
   split:
