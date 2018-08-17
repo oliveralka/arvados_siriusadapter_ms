@@ -98,6 +98,9 @@ inputs:
       prefix: --no_recalibration
     default: false
     doc: No recalibration of the spectrum during the analysis
+   parts:
+    type: int
+    default: 1
 
 outputs:
   zip_all:
