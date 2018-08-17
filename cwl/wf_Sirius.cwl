@@ -42,6 +42,12 @@ inputs:
       symbols:  [qtof, orbitrap, fticr]
     default: qtof
     doc: Specify the used analysis profile
+  compount_timeout:
+    type: int
+    inputBinding:
+      prefix: --compound_timeout
+    doc: Time out in seconds per compound. To disable the timeout set the value to 0.
+    default: 10 
   parts:
     type: int
     default: 1
@@ -49,36 +55,34 @@ inputs:
 outputs:
   sirius_mzTab:
     type: File
-    outputSource: merge_sirius/merge_mzTab_file
+    outputSource: zip_all/
 
 steps:
   split:
-    run: MzMLSplitter.cwl
+    run: split_ms.cwl
     in:
       in: in
       parts: parts
-    out: [split_mzML_files]
+    out: [split_ms_files]
   
-  siriusAdapter:
-    run: SiriusAdapter.cwl
+  SIRIUS:
+    run: Sirius.cwl
     in:
-      executable:
-        default: "/THIRDPARTY/Linux/64bit/Sirius/sirius"
-      in: split/split_mzML_files
+      in_ms: split/split_ms_files
       candidates: candidates
       ppm_max: ppm_max
       auto_charge: auto_charge
       no_recalibration: no_recalibration
-      fingerid1: fingerid
-      fingerid2: fingerid
+      fingerid: fingerid
+      compound_timeout: compound_timeout
     scatter: in
-    out: [out_sirius, out_fingerid]
-  merge_sirius:
-    run: merge_mzTab_simple.cwl
+    out: [out_dir] # not sure hot to do this ? zip the zips 
+  zip_sirius:
+    run: zip_all.cwl
     in:
-      in: siriusAdapter/out_sirius
+      in: SIRIUS/out_dir
       prefix:
         default: SML
       outname:
         default: sirius
-    out: [merge_mzTab_file]
+    out: [zip_all]
