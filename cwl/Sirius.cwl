@@ -66,8 +66,7 @@ inputs:
       prefix: --elements
     default: CHNOP[5]S[8]Cl[1]
     doc: The allowed elements
-    
-  compount_timeout:
+  compound_timeout:
    type: int
    inputBinding:
      prefix: --compound_timeout
