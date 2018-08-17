@@ -53,9 +53,9 @@ inputs:
     default: 1
 
 outputs:
-  sirius_mzTab:
-    type: File
-    outputSource: zip_all/
+  out_dir:
+    type: Directory
+    outputSource: out_dir/
 
 steps:
   split:
