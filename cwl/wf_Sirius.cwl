@@ -42,7 +42,7 @@ inputs:
       symbols:  [qtof, orbitrap, fticr]
     default: qtof
     doc: Specify the used analysis profile
-  compount_timeout:
+  compound_timeout:
     type: int
     inputBinding:
       prefix: --compound_timeout
