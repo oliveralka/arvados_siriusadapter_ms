@@ -80,6 +80,7 @@ inputs:
     inputBinding:
       prefix: --tree_timeout
     doc: Time out in seconds per fragmentation tree computation.
+    default: 0
   auto_charge:
     type: boolean?
     inputBinding:
@@ -100,12 +101,12 @@ inputs:
     doc: No recalibration of the spectrum during the analysis
    parts:
     type: int
-    default: 1
+    default: 20
 
 outputs:
   zip_all:
     type: File
-    outputSource: zip_sirius/zip_all
+    outputSource: zip_all
 
 steps:
   split:
@@ -126,7 +127,7 @@ steps:
       fingerid: fingerid
       compound_timeout: compound_timeout
     scatter: in
-    out: [out_dir] # not sure hot to do this ? zip the zips 
+    out: [out_dir]  
   zip_sirius:
     run: zip_all.cwl
     in:

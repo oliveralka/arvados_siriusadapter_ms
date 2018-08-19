@@ -163,30 +163,39 @@ steps:
     in:
       executable:
         default: "/THIRDPARTY/Linux/64bit/Sirius/sirius"
-      in: split/split_mzML_files
-      candidates: candidates
-      ppm_max: ppm_max
-      auto_charge: auto_charge
-      no_recalibration: no_recalibration
-      fingerid1: fingerid
-      fingerid2: fingerid
+      in: in 
+      in_featureinfo: in featureinfo
+      out_ms1: out_ms1
+      out_ms2: out_ms2
+      filter_by_num_masstraces: filter_by_num_masstraces
+      feature_only: feature_only
+      precursor_mz_tolerance: precursor_mz_tolerance
+      precursor_mz_tolerance_unit: precursor_mz_tolerance_unit
+      precursor_rt_tolerance: precursor_rt_tolerance
     scatter: in
-    out: [out_sirius, out_fingerid]
+    out: [out_ms]
    split: #split .ms file in multiple parts
-    run: MzMLSplitter.cwl
+    run: split_ms.cwl
     in:
       in: in
       parts: parts
-    out: [split_mzML_files]
+    out: [split_ms_files]
    siriusAdapter: #run Sirius via the SiriusAdapter via .ms input
     run: SiriusAdapter.cwl
     in:
       executable:
         default: "/THIRDPARTY/Linux/64bit/Sirius/sirius"
-      in: split/split_mzML_files
+      in_ms: split/split_ms_files
+      elements: elements
       candidates: candidates
       ppm_max: ppm_max
       auto_charge: auto_charge
+      compound_timeout: compound_timeout
+      tree_timeout: tree_timeout
+      top_n_hits: top_n_hits
+      isotope: isotope
+      database: database
+      profile: profile
       no_recalibration: no_recalibration
       fingerid1: fingerid
       fingerid2: fingerid
