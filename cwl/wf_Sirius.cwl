@@ -14,7 +14,7 @@ inputs:
   in_ms:
     type: File
     inputBinding:
-      position: -1 # not sure if that works end of command 
+      position: 6 
   fingerid:
     type: boolean
     inputBinding:
