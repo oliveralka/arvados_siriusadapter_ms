@@ -11,14 +11,14 @@ inputs:
     type: string
     inputBinding:
       prefix: --prefix
-  
+
   outname:
     type: string
 
 arguments:
 - valueFrom: $(inputs.outname).mzTab
   prefix: -o
-    
+
 outputs:
   merge_mzTab_file:
     type: File

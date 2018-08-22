@@ -11,7 +11,7 @@ inputs:
   in_ms:
     type: File
     inputBinding:
-      position: -1 # not sure if that works end of command 
+      position: 8 
   fingerid:
     type: boolean
     inputBinding:
@@ -20,7 +20,7 @@ inputs:
   out_dir:
     type: Directory
     inputBinding:
-      prefix: --output  
+      prefix: --output
   profile:
     type:
       name: profile
@@ -101,7 +101,7 @@ outputs:
     type: File?
      outputBinding:
       glob: out_sirius.mzTab
-      
+
   out_ms:
     type: File?
       outputBindung:
