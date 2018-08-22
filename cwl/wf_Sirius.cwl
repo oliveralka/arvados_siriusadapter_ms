@@ -40,7 +40,6 @@ inputs:
     default: 5
     doc: The number of candidates in the output
   database:
-    type:
       name: database
       type: enum
       symbols: [all, chebi, custom, kegg, bio, natural products, pubmed, hmdb, biocyc, hsdb, knapsack, biological, zinc bio, gnps, pubchem, mesh, maconda]
