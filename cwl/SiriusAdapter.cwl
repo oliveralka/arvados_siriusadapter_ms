@@ -1,3 +1,4 @@
+#!/usr/bin/env cwl-runner
 cwlVersion: v1.0
 class: CommandLineTool
 baseCommand: [/OpenMS-build/bin/SiriusAdapter, -out_sirius, ./out_sirius.mzTab]
@@ -40,7 +41,7 @@ inputs:
     type: boolean?
     inputBinding:
       position: 7
-      prefix: -out_ms  
+      prefix: -out_ms
   out_ms2:
     type: boolean?
     inputBinding:
@@ -51,7 +52,7 @@ inputs:
     inputBinding:
       prefix: -filter_by_num_masstraces
     default: 1
-    doc: Features have to have at least x MassTraces. To use this parameter feature_only is necessary. 
+    doc: Features have to have at least x MassTraces. To use this parameter feature_only is necessary.
   feature_only:
     type: boolean
     inputBinding:
@@ -63,7 +64,7 @@ inputs:
     inputBinding:
       prefix: -precursor_mz_tolerance
   doc: Tolerance window for precursor selection (Feature selection in regard to the precursor).
-  precursor_mz_tolerance_unit: 
+  precursor_mz_tolerance_unit:
     type: String
     inputBinding:
       prefix: -precursor_mz_tolerance_unit
@@ -165,7 +166,7 @@ outputs:
     type: File?
      outputBinding:
       glob: out_sirius.mzTab
-      
+
   out_ms:
     type: File?
       outputBindung:

@@ -1,21 +1,18 @@
 #!/usr/bin/env cwl-runner
 cwlVersion: v1.0
 class: CommandLineTool
-requirements:
-  - class: ShellCommandRequirement
-baseCommand: tar czf
+#baseCommand: /scripts/openms/compress_sirius_output_simple.sh
+baseCommand: /Users/alka/Documents/work/projects/Cloud/scripts/openms/compress_sirius_output_simple.sh
 inputs:
-  in:
-    type: File[]
+  name_of_output:
+    type: File
     inputBinding:
       position: 1
-  compound_count:
-    type: int
-    inputBinding:
-      position: 2  
-    
+  input_files:
+    type: File
+
 outputs:
-  tar_out:
+  output:
     type: File
     outputBinding:
-      glob: $(inputs.outname).tar.gz
+      glob: $(output_file).zip

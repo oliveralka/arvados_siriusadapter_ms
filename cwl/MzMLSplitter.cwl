@@ -1,3 +1,4 @@
+#!/usr/bin/env cwl-runner
 cwlVersion: v1.0
 class: CommandLineTool
 
@@ -25,14 +26,9 @@ inputs:
     inputBinding:
       prefix: -split
   no_chrom:
-    type: boolean    
+    type: boolean
     default: true
-    doc: Remove chromatograms from split files 
-
-#  unit:
-#    type: string
-#    inputBinding:
-#      prefix: -unit    
+    doc: Remove chromatograms from split files
 
 outputs:
   split_mzML_files:
@@ -41,4 +37,3 @@ outputs:
        items: File
     outputBinding:
       glob: "out_*of*.mzML"
-
