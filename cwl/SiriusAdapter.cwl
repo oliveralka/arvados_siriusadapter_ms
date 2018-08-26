@@ -1,19 +1,24 @@
 #!/usr/bin/env cwl-runner
 cwlVersion: v1.0
 class: CommandLineTool
-baseCommand: [/OpenMS-build/bin/SiriusAdapter, -out_sirius, ./out_sirius.mzTab]
+#baseCommand: [/OpenMS-build/bin/SiriusAdapter, -out_sirius, ./out_sirius.mzTab]
+baseCommand: [/Users/alka/Documents/work/software/openms_oa/OpenMS/openms-build/bin/SiriusAdapter, -out_sirius, ./out_sirius.mzTab]
 
 requirements:
-- class: ShellCommandRequirement
-- class: DockerRequirement
-  dockerPull: arvados/jobs-with-openms:latest
+- class: ScatterFeatureRequirement
+#- class: DockerRequirement
+#  dockerPull: arvados/jobs-with-openms
+- class:  ResourceRequirement
+  ramMin: 1000
+  coresMin: 1
+  coresMax: 1
 
 inputs:
   executable:
     type: string
     inputBinding:
       prefix: -executable
-  in:
+  in_mzml:
     type: File?
     inputBinding:
       prefix: -in
@@ -45,7 +50,7 @@ inputs:
   out_ms2:
     type: boolean?
     inputBinding:
-      position 8:
+      position: 8
       prefix: ./out_ms.ms
   filter_by_num_masstraces:
     type: int
@@ -63,17 +68,20 @@ inputs:
     type: float
     inputBinding:
       prefix: -precursor_mz_tolerance
-  doc: Tolerance window for precursor selection (Feature selection in regard to the precursor).
+    default: 0.005
+    doc: Tolerance window for precursor selection (Feature selection in regard to the precursor).
   precursor_mz_tolerance_unit:
-    type: String
+    type: string
     inputBinding:
       prefix: -precursor_mz_tolerance_unit
-  doc: Unit of the precursor_mz_tolerance (Da, ppm).
+    default: "Da"
+    doc: Unit of the precursor_mz_tolerance (Da, ppm).
   precursor_rt_tolerance:
-   type: int
-   inputBinding:
-     prefix: -precursor_rt_tolerance
-  doc: Tolerance window (left and right) for precursor selection [seconds].
+    type: int
+    inputBinding:
+      prefix: -precursor_rt_tolerance
+    default: 5
+    doc: Tolerance window (left and right) for precursor selection [seconds].
   debug:
     type: int
     inputBinding:
@@ -125,11 +133,11 @@ inputs:
     default: CHNOP[5]S[8]Cl[1]
     doc: The allowed elements
   compount_timeout:
-   type: int
-   inputBinding:
-     prefix: -compound_timeout
-   doc: Time out in seconds per compound. To disable the timeout set the value to 0.
-   default: 10
+    type: int
+    inputBinding:
+      prefix: -compound_timeout
+    doc: Time out in seconds per compound. To disable the timeout set the value to 0.
+    default: 10
   tree_timeout:
     type: int
     inputBinding:
@@ -164,13 +172,13 @@ inputs:
 outputs:
   out_sirius:
     type: File?
-     outputBinding:
+    outputBinding:
       glob: out_sirius.mzTab
 
   out_ms:
     type: File?
-      outputBindung:
-        glob: out_ms.ms
+    outputBinding:
+      glob: out_ms.ms
 
   out_fingerid:
     type: File?

@@ -1,24 +1,31 @@
+#!/usr/bin/env cwl-runner
 cwlVersion: v1.0
 class: CommandLineTool
-baseCommand: [/THIRDPARTY/Linux/64bit/Sirius/sirius, -out_sirius, ./out_sirius.mzTab]
+#baseCommand: [/THIRDPARTY/Linux/64bit/Sirius/sirius, -out_sirius, ./out_sirius.mzTab]
+baseCommand: [/Users/alka/Documents/work/software/THIRDPARTY/MacOS/64bit/Sirius/sirius]
+
 
 requirements:
-- class: ShellCommandRequirement
-- class: DockerRequirement
-  dockerPull: arvados/jobs-with-openms:latest
+#- class: ScatterFeatureRequirement
+#- class: DockerRequirement
+#  dockerPull: arvados/jobs-with-openms
+- class:  ResourceRequirement
+  ramMin: 1000
+  coresMin: 1
+  coresMax: 1
 
 inputs:
   in_ms:
-    type: File
+    type: string
     inputBinding:
-      position: 8 
+      position: 100
   fingerid:
     type: boolean
     inputBinding:
       prefix: --fingerid
     default: false
   out_dir:
-    type: Directory
+    type: string
     inputBinding:
       prefix: --output
   profile:
@@ -48,7 +55,7 @@ inputs:
   ppm_max:
     type: int
     inputBinding:
-      prefix: --ppm_max
+      prefix: --ppm-max
     default: 10
     doc: Allowed ppm for decomposing masses
   isotope:
@@ -69,18 +76,18 @@ inputs:
   compound_timeout:
    type: int
    inputBinding:
-     prefix: --compound_timeout
+     prefix: --compound-timeout
    doc: Time out in seconds per compound. To disable the timeout set the value to 0.
    default: 10
   tree_timeout:
-    type: int
+    type: int?
     inputBinding:
-      prefix: --tree_timeout
+      prefix: --tree-timeout
     doc: Time out in seconds per fragmentation tree computation.
   auto_charge:
     type: boolean?
     inputBinding:
-      prefix: --auto_charge
+      prefix: --auto-charge
     default: false
     doc: Use this option if the charge of your compounds is unknown and you do not want to assume [M+H]+ as default.
   iontree:
@@ -96,18 +103,8 @@ inputs:
     default: false
     doc: No recalibration of the spectrum during the analysis
 
-outputs:
-  out_sirius:
-    type: File?
-     outputBinding:
-      glob: out_sirius.mzTab
-
-  out_ms:
-    type: File?
-      outputBindung:
-        glob: out_ms.ms
-
-  out_fingerid:
-    type: File?
-    outputBinding:
-      glob: out_fingerid.mzTab
+outputs: []
+#  out_sirius:
+#    type: Directoery
+#    outputBinding:
+#       $(inputs.out_dir)
