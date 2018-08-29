@@ -81,7 +81,7 @@ inputs:
       prefix: --tree_timeout
     doc: Time out in seconds per fragmentation tree computation.
     default: 0
-  auto_charge:
+  auto_charge:   
     type: boolean?
     inputBinding:
       prefix: --auto_charge
@@ -126,14 +126,11 @@ steps:
       no_recalibration: no_recalibration
       fingerid: fingerid
       compound_timeout: compound_timeout
-    scatter: in
+    scatter: in_ms
     out: [out_dir]
   zip_sirius:
     run: zip_all.cwl
     in:
-      in: SIRIUS/out_dir
-      prefix:
-        default: SML
-      outname:
-        default: sirius
+      name_of_output: archive.zip
+      files_to_zip: SIRIUS/out_dir
     out: [zip_all]

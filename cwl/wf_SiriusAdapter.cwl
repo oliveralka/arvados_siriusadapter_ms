@@ -2,6 +2,8 @@
 cwlVersion: v1.0
 class: Workflow
 
+#only works when fingerid is enabled
+
 requirements:
 - class: ScatterFeatureRequirement
 #- class: DockerRequirement
@@ -174,6 +176,9 @@ outputs:
   sirius_mzTab:
     type: File
     outputSource: merge_mztab_sirius/merge_mzTab_file
+  fingerid_mzTab:
+    type: File
+    outputSource: merge_mztab_fingerid/merge_mzTab_file
 
 steps:
   SiriusAdapter_conversion_to_ms: #conversion step to converter mzML & featureXML to .ms file
@@ -219,7 +224,7 @@ steps:
       fingerid1: fingerid1
       fingerid2: fingerid2
       debug: debug
-    scatter: [in_ms]
+    scatter: in_ms
     out: [out_sirius, out_fingerid]
 
     # not sure about how to merge sirius and csifinerid mztab
@@ -231,4 +236,14 @@ steps:
         default: SML
       outname:
         default: sirius
+    out: [merge_mzTab_file]
+
+  merge_mztab_fingerid: # merge different sirius and fingerid outputs
+    run: merge_mzTab_simple.cwl
+    in:
+      in: SiriusAdapter_sirius_and_csifingerid/out_fingerid
+      prefix:
+        default: SML
+      outname:
+        default: fingerid
     out: [merge_mzTab_file]

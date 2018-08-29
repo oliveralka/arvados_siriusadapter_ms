@@ -2,13 +2,20 @@
 cwlVersion: v1.0
 class: CommandLineTool
 #baseCommand: /THIRDPARTY/Linux/64bit/Sirius/sirius
+# hack for setting the internal output directory to use for output
 baseCommand: /Users/alka/Documents/work/software/THIRDPARTY/MacOS/64bit/Sirius/sirius
 
-
 requirements:
-#- class: ScatterFeatureRequirement
 #- class: DockerRequirement
 #  dockerPull: arvados/jobs-with-openms
+#- class: InitialWorkDirRequirement
+#  listing:
+#    - entry: |
+#        ${
+#           return {"class": "Directory", "basename": inputs.out_dir.basename, "listing": []}
+#         }
+#      writable: true
+- class: InlineJavascriptRequirement
 - class:  ResourceRequirement
   ramMin: 1000
   coresMin: 1
@@ -103,4 +110,8 @@ inputs:
     default: false
     doc: No recalibration of the spectrum during the analysis
 
-outputs: []
+outputs:
+  sirius_output:
+    type: Directory
+    outputBinding:
+      glob: "."
