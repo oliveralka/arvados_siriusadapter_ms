@@ -15,7 +15,9 @@ inputs:
     inputBinding:
       position: 2
 outputs:
-  output_split_ms:
-    type: File[]
+  split_ms_files:
+    type:
+      type: array
+      items: File
     outputBinding:
       glob: "*.ms"

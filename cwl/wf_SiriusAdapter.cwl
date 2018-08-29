@@ -1,10 +1,11 @@
+#!/usr/bin/env cwl-runner
 cwlVersion: v1.0
 class: Workflow
 
 requirements:
 - class: ScatterFeatureRequirement
-- class: DockerRequirement
-  dockerPull: arvados/jobs-with-openms
+#- class: DockerRequirement
+#  dockerPull: arvados/jobs-with-openms
 - class:  ResourceRequirement
   ramMin: 1000
   coresMin: 1
@@ -15,14 +16,28 @@ inputs:
     type: string
     inputBinding:
       prefix: -executable
-  in:
+  in_mzml:
     type: File?
     inputBinding:
       prefix: -in
+  in_ms:
+    type: File?
+    inputBinding:
+      prefix: -in_ms
   in_featureinfo:
     type: File?
     inputBinding:
       prefix: -in_featureinfo
+  out_ms1:
+    type: boolean?
+    inputBinding:
+      position: 7
+      prefix: -out_ms
+  out_ms2:
+    type: boolean?
+    inputBinding:
+      position: 8
+      prefix: ./out_ms.ms
   fingerid1:
     type: boolean?
     inputBinding:
@@ -40,7 +55,7 @@ inputs:
     inputBinding:
       prefix: -filter_by_num_masstraces
     default: 1
-    doc: Features have to have at least x MassTraces. To use this parameter feature_only is necessary. 
+    doc: Features have to have at least x MassTraces. To use this parameter feature_only is necessary.
   feature_only:
     type: boolean
     inputBinding:
@@ -51,17 +66,20 @@ inputs:
     type: float
     inputBinding:
       prefix: -precursor_mz_tolerance
-  doc: Tolerance window for precursor selection (Feature selection in regard to the precursor).
-  precursor_mz_tolerance_unit: 
-    type: String
+    default: 0.005
+    doc: Tolerance window for precursor selection (Feature selection in regard to the precursor).
+  precursor_mz_tolerance_unit:
+    type: string
     inputBinding:
       prefix: -precursor_mz_tolerance_unit
-  doc: Unit of the precursor_mz_tolerance (Da, ppm).
+    default: "Da"
+    doc: Unit of the precursor_mz_tolerance (Da, ppm).
   precursor_rt_tolerance:
-   type: int
-   inputBinding:
-     prefix: -precursor_rt_tolerance
-  doc: Tolerance window (left and right) for precursor selection [seconds].
+    type: int
+    inputBinding:
+      prefix: -precursor_rt_tolerance
+    default: 5
+    doc: Tolerance window (left and right) for precursor selection [seconds].
   debug:
     type: int
     inputBinding:
@@ -112,12 +130,12 @@ inputs:
       prefix: -elements
     default: CHNOP[5]S[8]Cl[1]
     doc: The allowed elements
-  compount_timeout:
-   type: int
-   inputBinding:
-     prefix: -compound_timeout
-   doc: Time out in seconds per compound. To disable the timeout set the value to 0.
-   default: 10
+  compound_timeout:
+    type: int
+    inputBinding:
+      prefix: -compound_timeout
+    doc: Time out in seconds per compound. To disable the timeout set the value to 0.
+    default: 10
   tree_timeout:
     type: int
     inputBinding:
@@ -148,23 +166,23 @@ inputs:
       prefix: -no_recalibration
     default: false
     doc: No recalibration of the spectrum during the analysis
-   parts:
+  count:
     type: int
     default: 1
 
 outputs:
   sirius_mzTab:
     type: File
-    outputSource: merge_sirius/merge_mzTab_file
+    outputSource: merge_mztab_sirius/merge_mzTab_file
 
 steps:
-  siriusAdapter: #conversion step to converter mzML & featureXML to .ms file
+  SiriusAdapter_conversion_to_ms: #conversion step to converter mzML & featureXML to .ms file
     run: SiriusAdapter.cwl
     in:
-      executable:
-        default: "/THIRDPARTY/Linux/64bit/Sirius/sirius"
-      in: in 
-      in_featureinfo: in featureinfo
+      executable: #default: "/THIRDPARTY/Linux/64bit/Sirius/sirius"
+        default: "/Users/alka/Documents/work/software/THIRDPARTY/MacOS/64bit/Sirius/sirius"
+      in_mzml: in_mzml
+      in_featureinfo: in_featureinfo
       out_ms1: out_ms1
       out_ms2: out_ms2
       filter_by_num_masstraces: filter_by_num_masstraces
@@ -172,20 +190,21 @@ steps:
       precursor_mz_tolerance: precursor_mz_tolerance
       precursor_mz_tolerance_unit: precursor_mz_tolerance_unit
       precursor_rt_tolerance: precursor_rt_tolerance
-    scatter: in
-    out: [out_ms]
-   split: #split .ms file in multiple parts
+    out:  [out_ms]
+
+  split_ms: #split .ms file in multiple parts
     run: split_ms.cwl
     in:
-      in: in
-      parts: parts
+      input_file: SiriusAdapter_conversion_to_ms/out_ms
+      count: count
     out: [split_ms_files]
-   siriusAdapter: #run Sirius via the SiriusAdapter via .ms input
+
+  SiriusAdapter_sirius_and_csifingerid: #run Sirius via the SiriusAdapter via .ms input
     run: SiriusAdapter.cwl
     in:
-      executable:
-        default: "/THIRDPARTY/Linux/64bit/Sirius/sirius"
-      in_ms: split/split_ms_files
+      executable: #default: "/THIRDPARTY/Linux/64bit/Sirius/sirius"
+        default: "/Users/alka/Documents/work/software/THIRDPARTY/MacOS/64bit/Sirius/sirius"
+      in_ms: split_ms/split_ms_files
       elements: elements
       candidates: candidates
       ppm_max: ppm_max
@@ -197,14 +216,17 @@ steps:
       database: database
       profile: profile
       no_recalibration: no_recalibration
-      fingerid1: fingerid
-      fingerid2: fingerid
-    scatter: in
-    out: [out_sirius, out_fingerid] 
-  merge_sirius: # merge different sirius and fingerid outputs 
+      fingerid1: fingerid1
+      fingerid2: fingerid2
+      debug: debug
+    scatter: [in_ms]
+    out: [out_sirius, out_fingerid]
+
+    # not sure about how to merge sirius and csifinerid mztab
+  merge_mztab_sirius: # merge different sirius and fingerid outputs
     run: merge_mzTab_simple.cwl
     in:
-      in: siriusAdapter/out_sirius
+      in: SiriusAdapter_sirius_and_csifingerid/out_sirius
       prefix:
         default: SML
       outname:

@@ -1,7 +1,8 @@
 #!/usr/bin/env cwl-runner
 cwlVersion: v1.0
 class: CommandLineTool
-baseCommand: /scripts/merge_mzTab_simple.py
+#baseCommand: /scripts/merge_mzTab_simple.py
+baseCommand: /Users/alka/Documents/work/projects/Cloud/scripts/openms/merge_mzTab_simple.py
 inputs:
   in:
     type: File[]

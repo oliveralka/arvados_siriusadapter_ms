@@ -1,3 +1,4 @@
+#!/usr/bin/env cwl-runner
 cwlVersion: v1.0
 class: Workflow
 
@@ -14,7 +15,7 @@ inputs:
   in_ms:
     type: File
     inputBinding:
-      position: 6 
+      position: 6
   fingerid:
     type: boolean
     inputBinding:
@@ -23,7 +24,7 @@ inputs:
   out_dir:
     type: Directory
     inputBinding:
-      prefix: --output  
+      prefix: --output
   profile:
     type:
       name: profile
@@ -114,7 +115,7 @@ steps:
       in: in
       parts: parts
     out: [split_ms_files]
-  
+
   SIRIUS:
     run: Sirius.cwl
     in:
@@ -126,7 +127,7 @@ steps:
       fingerid: fingerid
       compound_timeout: compound_timeout
     scatter: in
-    out: [out_dir]  
+    out: [out_dir]
   zip_sirius:
     run: zip_all.cwl
     in:

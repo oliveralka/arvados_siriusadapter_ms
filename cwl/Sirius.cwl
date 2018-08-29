@@ -1,8 +1,8 @@
 #!/usr/bin/env cwl-runner
 cwlVersion: v1.0
 class: CommandLineTool
-#baseCommand: [/THIRDPARTY/Linux/64bit/Sirius/sirius, -out_sirius, ./out_sirius.mzTab]
-baseCommand: [/Users/alka/Documents/work/software/THIRDPARTY/MacOS/64bit/Sirius/sirius]
+#baseCommand: /THIRDPARTY/Linux/64bit/Sirius/sirius
+baseCommand: /Users/alka/Documents/work/software/THIRDPARTY/MacOS/64bit/Sirius/sirius
 
 
 requirements:
@@ -16,7 +16,7 @@ requirements:
 
 inputs:
   in_ms:
-    type: string
+    type: File
     inputBinding:
       position: 100
   fingerid:
@@ -24,8 +24,8 @@ inputs:
     inputBinding:
       prefix: --fingerid
     default: false
-  out_dir:
-    type: string
+  out_dir: #directory needs to be created beforehand (not sure if that can be better)
+    type: Directory
     inputBinding:
       prefix: --output
   profile:
@@ -104,7 +104,3 @@ inputs:
     doc: No recalibration of the spectrum during the analysis
 
 outputs: []
-#  out_sirius:
-#    type: Directoery
-#    outputBinding:
-#       $(inputs.out_dir)
