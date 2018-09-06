@@ -2,19 +2,11 @@
 cwlVersion: v1.0
 class: CommandLineTool
 #baseCommand: /THIRDPARTY/Linux/64bit/Sirius/sirius
-# hack for setting the internal output directory to use for output
 baseCommand: /Users/alka/Documents/work/software/THIRDPARTY/MacOS/64bit/Sirius/sirius
 
 requirements:
 #- class: DockerRequirement
 #  dockerPull: arvados/jobs-with-openms
-#- class: InitialWorkDirRequirement
-#  listing:
-#    - entry: |
-#        ${
-#           return {"class": "Directory", "basename": inputs.out_dir.basename, "listing": []}
-#         }
-#      writable: true
 - class: InlineJavascriptRequirement
 - class:  ResourceRequirement
   ramMin: 1000
@@ -31,10 +23,16 @@ inputs:
     inputBinding:
       prefix: --fingerid
     default: false
-  out_dir: #directory needs to be created beforehand (not sure if that can be better)
-    type: Directory
+  out_dir1:
+    type: boolean
     inputBinding:
+      position: 3
       prefix: --output
+  out_dir2:
+    type: boolean
+    inputBinding:
+      position: 4
+      prefix: ./sirius_output_dir
   profile:
     type:
       name: profile
@@ -112,6 +110,6 @@ inputs:
 
 outputs:
   sirius_output:
-    type: Directory
+    type: Directory?
     outputBinding:
-      glob: "."
+      glob: sirius_output_dir

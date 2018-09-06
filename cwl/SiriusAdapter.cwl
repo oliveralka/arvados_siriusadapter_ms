@@ -52,6 +52,16 @@ inputs:
     inputBinding:
       position: 8
       prefix: ./out_ms.ms
+  sirius_workspace_directory1:
+    type: boolean?
+    inputBinding:
+      position: 9
+      prefix: -sirius_workspace_directory
+  sirius_workspace_directory2:
+    type: boolean?
+    inputBinding:
+      position: 10
+      prefix: ./sirius_workspace_directory
   filter_by_num_masstraces:
     type: int
     inputBinding:
@@ -184,3 +194,8 @@ outputs:
     type: File?
     outputBinding:
       glob: out_fingerid.mzTab
+
+  out_sirius_workspace_directory:
+    type: Directory?
+    outputBinding:
+      glob: sirius_workspace_directory

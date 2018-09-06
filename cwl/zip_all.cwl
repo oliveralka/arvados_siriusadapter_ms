@@ -10,7 +10,7 @@ inputs:
     inputBinding:
       position: 1
   files_to_zip:
-    type: string
+    type: Directory[]
     inputBinding:
       position: 2
 

@@ -52,6 +52,16 @@ inputs:
       position: 6
       prefix: ./out_fingerid.mzTab
     default: false
+  sirius_workspace_directory1:
+    type: boolean?
+    inputBinding:
+      position: 9
+      prefix: -sirius_workspace_directory
+  sirius_workspace_directory2:
+    type: boolean?
+    inputBinding:
+      position: 10
+      prefix: ./sirius_workspace_directory
   filter_by_num_masstraces:
     type: int
     inputBinding:
@@ -171,6 +181,9 @@ inputs:
   count:
     type: int
     default: 1
+  name_of_output:
+    type: string
+    default: archive.zip
 
 outputs:
   sirius_mzTab:
@@ -225,7 +238,7 @@ steps:
       fingerid2: fingerid2
       debug: debug
     scatter: in_ms
-    out: [out_sirius, out_fingerid]
+    out: [out_sirius, out_fingerid, out_sirius_workspace_directory]
 
     # not sure about how to merge sirius and csifinerid mztab
   merge_mztab_sirius: # merge different sirius and fingerid outputs
@@ -247,3 +260,10 @@ steps:
       outname:
         default: fingerid
     out: [merge_mzTab_file]
+
+  zip_sirius_workflows: # zip sirius workspace directores
+    run: zip_all.cwl
+    in:
+      name_of_output: name_of_output
+      files_to_zip: SiriusAdapter_sirius_and_csifingerid/out_sirius_workspace_directory
+    out: [output_zip]
