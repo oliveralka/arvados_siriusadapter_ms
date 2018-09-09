@@ -192,6 +192,9 @@ outputs:
   fingerid_mzTab:
     type: File
     outputSource: merge_mztab_fingerid/merge_mzTab_file
+  sirius_workspace:
+    type: File
+    outputSource: zip_sirius_workspace/output_zip
 
 steps:
   SiriusAdapter_conversion_to_ms: #conversion step to converter mzML & featureXML to .ms file
@@ -236,6 +239,8 @@ steps:
       no_recalibration: no_recalibration
       fingerid1: fingerid1
       fingerid2: fingerid2
+      sirius_workspace_directory1: sirius_workspace_directory1
+      sirius_workspace_directory2: sirius_workspace_directory2
       debug: debug
     scatter: in_ms
     out: [out_sirius, out_fingerid, out_sirius_workspace_directory]
@@ -261,7 +266,7 @@ steps:
         default: fingerid
     out: [merge_mzTab_file]
 
-  zip_sirius_workflows: # zip sirius workspace directores
+  zip_sirius_workspace: # zip sirius workspace directores
     run: zip_all.cwl
     in:
       name_of_output: name_of_output
