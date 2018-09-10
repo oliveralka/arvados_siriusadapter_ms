@@ -21,10 +21,14 @@ inputs:
     inputBinding:
       prefix: --fingerid
     default: false
-  out_dir:
-    type: Directory
+  out_dir1:
+    type: boolean
     inputBinding:
       prefix: --output
+  out_dir2:
+    type: boolean
+    inputBinding:
+      prefix: ~/sirius_workspace_directory
   profile:
     type:
       name: profile
@@ -81,7 +85,7 @@ inputs:
       prefix: --tree_timeout
     doc: Time out in seconds per fragmentation tree computation.
     default: 0
-  auto_charge:   
+  auto_charge:
     type: boolean?
     inputBinding:
       prefix: --auto_charge
@@ -121,16 +125,18 @@ steps:
     in:
       in_ms: split/split_ms_files
       candidates: candidates
+      out_dir1: out_dir1
+      out_dir2: out_dir2
       ppm_max: ppm_max
       auto_charge: auto_charge
       no_recalibration: no_recalibration
       fingerid: fingerid
       compound_timeout: compound_timeout
     scatter: in_ms
-    out: [out_dir]
+    out: [sirius_workspace_directory]
   zip_sirius:
     run: zip_all.cwl
     in:
       name_of_output: archive.zip
-      files_to_zip: SIRIUS/out_dir
+      files_to_zip: SIRIUS/sirius_workspace_directory
     out: [zip_all]

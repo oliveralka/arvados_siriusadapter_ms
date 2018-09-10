@@ -6,8 +6,10 @@ baseCommand: /Users/alka/Documents/work/software/THIRDPARTY/MacOS/64bit/Sirius/s
 
 requirements:
 #- class: DockerRequirement
-#  dockerPull: arvados/jobs-with-openms
-- class: InlineJavascriptRequirement
+#  dockerPull: arvados/jobs-with-
+#- class: InlineJavascriptRequirement
+#- class: InitialWorkDirRequirement
+#  listing: []
 - class:  ResourceRequirement
   ramMin: 1000
   coresMin: 1
@@ -32,7 +34,7 @@ inputs:
     type: boolean
     inputBinding:
       position: 4
-      prefix: ./sirius_output_dir
+      prefix: ~/sirius_workspace_directory
   profile:
     type:
       name: profile
@@ -110,6 +112,6 @@ inputs:
 
 outputs:
   sirius_output:
-    type: Directory?
+    type: Directory
     outputBinding:
-      glob: sirius_output_dir
+      glob: sirius_workspace_directory
