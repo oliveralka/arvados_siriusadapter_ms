@@ -9,6 +9,7 @@ inputs:
     type: string
     inputBinding:
       position: 1
+    default: archive.zip
   files_to_zip:
     type: Directory[]
     inputBinding:

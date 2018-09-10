@@ -4,8 +4,8 @@ class: Workflow
 
 requirements:
 - class: ScatterFeatureRequirement
-- class: DockerRequirement
-  dockerPull: arvados/jobs-with-openms
+#- class: DockerRequirement
+#  dockerPull: arvados/jobs-with-openms
 - class:  ResourceRequirement
   ramMin: 1000
   coresMin: 1
@@ -15,7 +15,7 @@ inputs:
   in_ms:
     type: File
     inputBinding:
-      position: 6
+      position: 100
   fingerid:
     type: boolean
     inputBinding:
@@ -24,10 +24,12 @@ inputs:
   out_dir1:
     type: boolean
     inputBinding:
+      position: 3
       prefix: --output
   out_dir2:
     type: boolean
     inputBinding:
+      position: 4
       prefix: ~/sirius_workspace_directory
   profile:
     type:
@@ -45,6 +47,7 @@ inputs:
     default: 5
     doc: The number of candidates in the output
   database:
+    type:
       name: database
       type: enum
       symbols: [all, chebi, custom, kegg, bio, natural products, pubmed, hmdb, biocyc, hsdb, knapsack, biological, zinc bio, gnps, pubchem, mesh, maconda]
@@ -74,11 +77,11 @@ inputs:
     default: CHNOP[5]S[8]Cl[1]
     doc: The allowed elements
   compound_timeout:
-   type: int
-   inputBinding:
-     prefix: --compound_timeout
-   doc: Time out in seconds per compound. To disable the timeout set the value to 0.
-   default: 10
+    type: int
+    inputBinding:
+      prefix: --compound_timeout
+    doc: Time out in seconds per compound. To disable the timeout set the value to 0.
+    default: 10
   tree_timeout:
     type: int
     inputBinding:
@@ -103,24 +106,24 @@ inputs:
       prefix: --no_recalibration
     default: false
     doc: No recalibration of the spectrum during the analysis
-   parts:
+  count:
     type: int
     default: 20
 
 outputs:
-  zip_all:
+  sirius_zip_output:
     type: File
-    outputSource: zip_all
+    outputSource: zip_sirius/output_zip
 
 steps:
   split:
     run: split_ms.cwl
     in:
-      in: in
-      parts: parts
+      input_file: in_ms
+      count: count
     out: [split_ms_files]
 
-  SIRIUS:
+  sirius:
     run: Sirius.cwl
     in:
       in_ms: split/split_ms_files
@@ -133,10 +136,10 @@ steps:
       fingerid: fingerid
       compound_timeout: compound_timeout
     scatter: in_ms
-    out: [sirius_workspace_directory]
+    out: [sirius_output]
+
   zip_sirius:
     run: zip_all.cwl
     in:
-      name_of_output: archive.zip
-      files_to_zip: SIRIUS/sirius_workspace_directory
-    out: [zip_all]
+      files_to_zip: sirius/sirius_output
+    out: [output_zip]
