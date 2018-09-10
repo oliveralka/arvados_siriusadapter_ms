@@ -1,0 +1,3 @@
+files_to_zip:
+- { class: Directory, location: /Users/alka/cwl_testfiles/zip_test_1} 
+- { class: Directory, location: /Users/alka/cwl_testfiles/zip_test_2}

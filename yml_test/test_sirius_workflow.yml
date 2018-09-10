@@ -1,0 +1,8 @@
+in_ms:
+  class: File
+  location: /Users/alka/cwl_testfiles/mid_sirius_test.ms
+out_dir1: true
+out_dir2: true 
+fingerid: true
+count: 20
+compound_timeout: 10

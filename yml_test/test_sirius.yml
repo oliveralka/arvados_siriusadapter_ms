@@ -1,0 +1,7 @@
+in_ms:
+  class: File
+  location: /Users/alka/cwl_testfiles/openms.ms
+out_dir1: true
+out_dir2: true 
+fingerid: true
+compound_timeout: 100

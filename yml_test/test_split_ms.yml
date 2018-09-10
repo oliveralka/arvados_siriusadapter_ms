@@ -1,0 +1,4 @@
+input_file: 
+  class: File
+  location: /Users/alka/cwl_testfiles/mid_sirius_test.ms
+count: 20

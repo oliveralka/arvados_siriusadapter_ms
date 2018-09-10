@@ -1,0 +1,11 @@
+executable: /Users/alka/Documents/work/software/THIRDPARTY/MacOS/64bit/Sirius/sirius
+in_mzml: 
+  class: File
+  location: /Users/alka/cwl_testfiles/input.mzML
+in_feautreinfo:
+  class: File 
+  location: /Users/alka/cwl_testfiles/input.featureXML
+fingerid1: true
+fingerid2: true
+sirius_workspace_directory1: true
+sirius_workspace_directory2: true
