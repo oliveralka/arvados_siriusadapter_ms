@@ -1,13 +1,10 @@
 #!/usr/bin/env cwl-runner
 cwlVersion: v1.0
 class: CommandLineTool
-#baseCommand: [/OpenMS-build/bin/SiriusAdapter, -out_sirius, ./out_sirius.mzTab]
-baseCommand: [/Users/alka/Documents/work/software/openms_oa/OpenMS/openms-build/bin/SiriusAdapter, -out_sirius, ./out_sirius.mzTab]
+baseCommand: [SiriusAdapter, -out_sirius, ./out_sirius.mzTab]
 
 requirements:
 - class: ScatterFeatureRequirement
-#- class: DockerRequirement
-#  dockerPull: arvados/jobs-with-openms
 - class:  ResourceRequirement
   ramMin: 1000
   coresMin: 1

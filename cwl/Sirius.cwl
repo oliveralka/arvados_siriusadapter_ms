@@ -1,15 +1,9 @@
 #!/usr/bin/env cwl-runner
 cwlVersion: v1.0
 class: CommandLineTool
-#baseCommand: /THIRDPARTY/Linux/64bit/Sirius/sirius
-baseCommand: /Users/alka/Documents/work/software/THIRDPARTY/MacOS/64bit/Sirius/sirius
+baseCommand: /THIRDPARTY/Linux/64bit/Sirius/sirius
 
 requirements:
-#- class: DockerRequirement
-#  dockerPull: arvados/jobs-with-
-#- class: InlineJavascriptRequirement
-#- class: InitialWorkDirRequirement
-#  listing: []
 - class:  ResourceRequirement
   ramMin: 1000
   coresMin: 1

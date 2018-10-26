@@ -6,8 +6,8 @@ class: Workflow
 
 requirements:
 - class: ScatterFeatureRequirement
-#- class: DockerRequirement
-#  dockerPull: arvados/jobs-with-openms
+- class: DockerRequirement
+  dockerPull: arvados/jobs-with-openms
 - class:  ResourceRequirement
   ramMin: 1000
   coresMin: 1
@@ -200,8 +200,8 @@ steps:
   SiriusAdapter_conversion_to_ms: #conversion step to converter mzML & featureXML to .ms file
     run: SiriusAdapter.cwl
     in:
-      executable: #default: "/THIRDPARTY/Linux/64bit/Sirius/sirius"
-        default: "/Users/alka/Documents/work/software/THIRDPARTY/MacOS/64bit/Sirius/sirius"
+      executable:
+        default: "/THIRDPARTY/MacOS/64bit/Sirius/sirius"
       in_mzml: in_mzml
       in_featureinfo: in_featureinfo
       out_ms1: out_ms1
@@ -223,8 +223,8 @@ steps:
   SiriusAdapter_sirius_and_csifingerid: #run Sirius via the SiriusAdapter via .ms input
     run: SiriusAdapter.cwl
     in:
-      executable: #default: "/THIRDPARTY/Linux/64bit/Sirius/sirius"
-        default: "/Users/alka/Documents/work/software/THIRDPARTY/MacOS/64bit/Sirius/sirius"
+      executable: 
+        default: "/THIRDPARTY/MacOS/64bit/Sirius/sirius"
       in_ms: split_ms/split_ms_files
       elements: elements
       candidates: candidates

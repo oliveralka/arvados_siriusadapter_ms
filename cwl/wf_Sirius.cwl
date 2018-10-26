@@ -4,8 +4,8 @@ class: Workflow
 
 requirements:
 - class: ScatterFeatureRequirement
-#- class: DockerRequirement
-#  dockerPull: arvados/jobs-with-openms
+- class: DockerRequirement
+  dockerPull: arvados/jobs-with-openms
 - class:  ResourceRequirement
   ramMin: 1000
   coresMin: 1

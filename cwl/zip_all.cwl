@@ -1,8 +1,7 @@
 #!/usr/bin/env cwl-runner
 cwlVersion: v1.0
 class: CommandLineTool
-#baseCommand: /scripts/openms/compress_sirius_output_simple.sh
-baseCommand: /Users/alka/Documents/work/projects/Cloud/scripts/openms/compress_sirius_output_simple.sh
+baseCommand: /scripts/openms/compress_sirius_output_simple.sh
 
 inputs:
   name_of_output:

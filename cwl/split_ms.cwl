@@ -2,8 +2,7 @@
 
 cwlVersion: v1.0
 class: CommandLineTool
-#baseCommand: /scripts/openms/split_ms_simple.sh
-baseCommand: /Users/alka/Documents/work/projects/Cloud/scripts/openms/split_ms_simple.sh
+baseCommand: /scripts/openms/split_ms_simple.sh
 
 inputs:
   input_file:
