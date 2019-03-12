@@ -1,7 +1,9 @@
 in_ms:
   class: File
-  location: /Users/alka/cwl_testfiles/openms.ms
+  location: /Users/alka/Desktop/cwl_testfiles/new_testfiles.ms
 out_dir1: true
 out_dir2: true 
+workspace1: true
+workspace2: true
 fingerid: true
-compound_timeout: 100
+compound_timeout: 10

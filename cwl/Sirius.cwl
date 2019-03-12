@@ -1,7 +1,8 @@
 #!/usr/bin/env cwl-runner
 cwlVersion: v1.0
 class: CommandLineTool
-baseCommand: /THIRDPARTY/Linux/64bit/Sirius/sirius
+#baseCommand: /THIRDPARTY/Linux/64bit/Sirius/sirius
+baseCommand:  /Users/alka/Desktop/sirius_4.04_test/sirius-osx64-headless-4.0.4-SNAPSHOT/bin/sirius
 
 requirements:
 - class:  ResourceRequirement
@@ -28,7 +29,17 @@ inputs:
     type: boolean
     inputBinding:
       position: 4
-      prefix: ~/sirius_workspace_directory
+      prefix: ~/sirius_out
+  workspace1:
+    type: boolean
+    inputBinding:
+      position: 5
+      prefix: --workspace
+  workspace2:
+    type: boolean
+    inputBinding:
+      position: 6
+      prefix: ~/sirius_workspace.sirius
   profile:
     type:
       name: profile
@@ -59,6 +70,11 @@ inputs:
       prefix: --ppm-max
     default: 10
     doc: Allowed ppm for decomposing masses
+  ppm_max_ms2:
+    type: int?
+    inputBinding:
+      prefix: --ppm-max-ms2
+    doc: Allowed ppm for decomposing masses
   isotope:
     type:
       name: isotope
@@ -79,7 +95,7 @@ inputs:
    inputBinding:
      prefix: --compound-timeout
    doc: Time out in seconds per compound. To disable the timeout set the value to 0.
-   default: 10
+   default: 100
   tree_timeout:
     type: int?
     inputBinding:
@@ -91,21 +107,36 @@ inputs:
       prefix: --auto-charge
     default: false
     doc: Use this option if the charge of your compounds is unknown and you do not want to assume [M+H]+ as default.
-  iontree:
-    type: boolean?
-    inputBinding:
-      prefix: -iontree
-    default: false
-    doc: Print molecular formulas and node labels with the ion formula instead of the neutral formula
   no_recalibration:
     type: boolean?
     inputBinding:
       prefix: --no_recalibration
     default: false
     doc: No recalibration of the spectrum during the analysis
+  maxmz:
+    type: int?
+    inputBinding:
+      prefix: --maxmz
+    doc: Consider compounds with a precursor mz lower or equal to this maximum mz.
+  noise:
+    type: int?
+    inputBinding:
+      prefix: --noise
+    doc: Median intensity of noise peaks.
+  processors:
+    type: int
+    inputBinding:
+      prefix: --processors
+    default: 1
+    doc: Median intensity of noise peaks.
 
 outputs:
   sirius_output:
-    type: Directory
+    type: File
     outputBinding:
-      glob: sirius_workspace_directory
+      glob: sirius_out/analysis_report.mztab
+      
+  sirius_workspace:
+    type: File
+    outputBinding:
+      glob: sirius_workspace.sirius
